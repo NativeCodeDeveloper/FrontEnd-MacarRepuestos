@@ -52,7 +52,7 @@ export default function Portada() {
                     fill                // ocupa todo el contenedor
                     priority            // se carga primero (LCP)
                     placeholder="blur"  // blur mientras carga
-                    quality={65}        // baja un poco la calidad para más velocidad
+                    quality={100}        // baja un poco la calidad para más velocidad
                     sizes="100vw"       // Next genera tamaños responsivos
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
                     className="opacity-90"

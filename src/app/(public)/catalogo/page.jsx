@@ -97,6 +97,12 @@ function CatalogoInner() {
         toast.success("Comprar Ahora!")
     }
 
+
+
+    function verProducto(id_producto) {
+        routerNext.push(`/producto/${id_producto}`);
+    }
+
     // Cargar productos según parámetros
     useEffect(() => {
         const cargarProductos = async () => {
@@ -584,7 +590,7 @@ function CatalogoInner() {
                                 <div className=" rounded-4 hover:shadow-md transition-all transform hover:-translate-y-1">
                                     <div  className="relative  overflow-hidden flex flex-col items-center p-4 ">
 
-                                        <div className="aspect-square">
+                                        <div className="aspect-square" onClick={()=> verProducto(producto.id_producto)}>
                                             <MediaCardImage imagenProducto={producto.imagenProducto} tituloProducto={producto.tituloProducto} />
                                         </div>
 

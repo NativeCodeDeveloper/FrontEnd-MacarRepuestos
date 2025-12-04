@@ -146,7 +146,7 @@ export default function Footer() {
                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg hover:scale-105 transition-transform duration-300 w-full max-w-[80px] sm:max-w-[100px] aspect-square flex items-center justify-center">
                   <Image src="/logoFedex.png" alt="FedEx" width={80} height={80} className="w-full h-auto object-contain" />
                 </div>
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg hover:scale-105 transition-transform duration-300 w-full max-w-[80px] sm:max-w-[100px] aspect-square flex items-center justify-center">
+                <div className="hidden md:block bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 shadow-lg hover:scale-105 transition-transform duration-300 w-full max-w-[80px] sm:max-w-[100px] aspect-square flex items-center justify-center">
                   <Image src="/logoPullman.png" alt="Pullman" width={80} height={80} className="w-full h-auto object-contain" />
                 </div>
               </div>

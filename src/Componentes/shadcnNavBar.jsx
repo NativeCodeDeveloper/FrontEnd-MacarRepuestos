@@ -211,9 +211,14 @@ export function ShadcnNavBar() {
                 </div>
 
                 {/* Menú Móvil Desplegable */}
-                <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                    mobileMenuOpen ? 'max-h-[800px] opacity-100 mt-4' : 'max-h-0 opacity-0'
-                }`}>
+                <div
+                    className={`lg:hidden transition-all duration-300 ease-in-out ${
+                        mobileMenuOpen
+                            ? 'max-h-[calc(100vh-72px)] opacity-100 mt-4 overflow-y-auto'
+                            : 'max-h-0 opacity-0 overflow-hidden'
+                    }`}
+                    style={{ WebkitOverflowScrolling: 'touch' }} // momentum scrolling en iOS
+                >
                     <div className="flex flex-col gap-2 py-4 border-t border-gray-700">
 
                         {/* Número de teléfono móvil */}
@@ -312,4 +317,3 @@ function ListItem({
         </li>
     )
 }
-
