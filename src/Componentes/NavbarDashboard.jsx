@@ -378,6 +378,29 @@ export default function NavbarDashboard() {
                   Inventario
                 </Link>
               </MenuItem>
+
+
+                <MenuItem
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        fontSize: '0.9rem',
+                        py: 1.5,
+                        px: 3,
+                        color: '#475569',
+                        '&:hover': {
+                            bgcolor: 'rgba(59, 130, 246, 0.08)',
+                            color: '#3B82F6'
+                        }
+                    }}
+                >
+                    <Link href="/dashboard/cupones" style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
+                        Cupones
+                    </Link>
+                </MenuItem>
+
+
+
               <MenuItem
                 onClick={handleCloseNavMenu}
                 sx={{

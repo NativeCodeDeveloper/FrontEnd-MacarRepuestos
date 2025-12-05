@@ -24,19 +24,9 @@ import {ShadcnButton} from "@/Componentes/shadcnButton";
 import {useSearchParams} from "next/navigation"
 
 
-export default function Catalogo({ searchParams }) {
-
-    const search = useSearchParams();
-    const id_categoriaProducto = search.get("id_categoriaProducto");
-
-
-
-
-  // Crear una key única basada en los parámetros para forzar re-render
-  const key = JSON.stringify(searchParams);
-
+export default function Catalogo({ searchParams = {} }) {
   return (
-    <Suspense key={key} fallback={<div className="p-8 text-gray-500">Cargando catálogo…</div>}>
+    <Suspense fallback={<div className="p-8 text-gray-500">Cargando catálogo…</div>}>
       <CatalogoInner />
     </Suspense>
   );
@@ -443,7 +433,7 @@ function CatalogoInner() {
                                     listarProductos()
                                 }
                             }}>
-                                <SelectTrigger className="w-60 md:w-80 ">
+                                <SelectTrigger className="w-80">
                                     <SelectValue  placeholder="Ordenar por" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -617,7 +607,7 @@ function CatalogoInner() {
 
                         {listaProductos.map((producto, index) => (
                             <div key={producto.id_producto}  className="h-full flex flex-col">
-                                <div className=" rounded-4 hover:shadow-2xl transition-all transform hover:-translate-y-1 flex flex-col h-full">
+                                <div className=" rounded-4 hover:shadow-2xl transition-all transform hover:-translate-y-1 flex flex-col h-auto">
                                     <div  className="relative  overflow-hidden flex flex-col items-center p-4 flex-grow ">
 
                                         <div className="aspect-square" onClick={()=> verProducto(producto.id_producto)}>

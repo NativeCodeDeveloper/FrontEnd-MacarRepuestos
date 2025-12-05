@@ -5,14 +5,14 @@ import { Case1 } from "@/Componentes/carruselMarcas";
 
 
 
-export default function Home() {
+export default function Home({ searchParams }) {
 
 
     return (
         <main>
             <Portada></Portada>
             <Case1 />
-            <Catalogo></Catalogo>
+            <Catalogo searchParams={searchParams || {}}></Catalogo>
 
 
 
