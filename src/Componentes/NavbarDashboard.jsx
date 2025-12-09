@@ -159,7 +159,49 @@ export default function NavbarDashboard() {
               Productos
             </Button>
 
-            <Button
+
+              <Button
+                  component={Link}
+                  href="/dashboard/cupones"
+                  color="inherit"
+                  disableRipple
+                  sx={{
+                      fontFamily: 'Inter, system-ui, sans-serif',
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      fontSize: '0.9rem',
+                      borderRadius: '10px',
+                      px: 3,
+                      py: 1,
+                      color: '#475569',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          bottom: 0,
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          width: 0,
+                          height: '2px',
+                          background: 'linear-gradient(90deg, #3B82F6, #2563EB)',
+                          transition: 'width 0.3s ease'
+                      },
+                      '&:hover': {
+                          bgcolor: 'rgba(59, 130, 246, 0.08)',
+                          color: '#3B82F6',
+                          '&::before': {
+                              width: '80%'
+                          }
+                      }
+                  }}
+              >
+                  Cupones
+              </Button>
+
+
+              <Button
               component={Link}
               href="/dashboard/gestionStock"
               color="inherit"

@@ -9,6 +9,8 @@ import {ShadcnTable} from "@/Componentes/shadcnTable";
 import formatearFecha from "@/FuncionesTranversales/funcionesTranversales.js"
 import Link from "next/link";
 import {Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
+import {ShadcnInput} from "@/Componentes/shadcnInput";
+import {Textarea} from "@/components/ui/textarea";
 
 
 function PedidoDetalleInner(){
@@ -17,6 +19,43 @@ function PedidoDetalleInner(){
     const API = process.env.NEXT_PUBLIC_API_URL;
     const [detalleComprador, setDetalleComprador] = useState([]);
     const [nuevoestado, setnuevoEstado] = useState("");
+
+
+
+    const [asunto, setAsunto] = useState("");
+    const [email, setEmail] = useState("");
+    const [mensaje, setMensaje] = useState("");
+
+
+    async function seguimientoCliente(asunto,email,mensaje){
+        try {
+        if (!asunto || !email || !mensaje) {
+            return toast.error('Para hacer el seguimiento debe llenar todos los campos de texto');
+        }
+
+        const res = await fetch(`${API}/correo/seguimiento`, {
+            method: "POST",
+            headers: {Accept: "application/json",
+            "Content-Type": "application/json"},
+            body: JSON.stringify({asunto,email,mensaje}),
+            cache: "no-cache"
+        })
+            if(!res.ok){
+                return toast.error('El correo del cliente NO es valido. No existe.');
+            }
+
+            const respuestaBackend = await res.json();
+
+            if(respuestaBackend.message === true){
+                return toast.success("Se ha realziado seguimiento correctamente. Se ha enviado mensaje de seguimiento al correo.")
+            }else{
+                return toast.error('El correo del cliente NO es valido. No existe.');
+            }
+
+        }catch(error){
+            return toast.error('Ha ocurrido un error porfavor contacte a soporte de NativeCode');
+        }
+    }
 
 
     async function obtenerDetallesComprador(id_pedido){
@@ -142,6 +181,12 @@ async function cambiarEstado(id_pedido, nuevoestado){
     })
 
 
+    useEffect(() => {
+        if (detalleComprador.length > 0) {
+            setEmail(detalleComprador[0].email_Comprador);
+        }
+    }, [detalleComprador]);
+
 
     return (
     <div className="min-h-screen bg-gradient-to-b from-white to-sky-50 px-4 py-6 sm:px-10 sm:py-10">
@@ -229,6 +274,60 @@ async function cambiarEstado(id_pedido, nuevoestado){
                 </div>
             ))}
 
+        </div>
+        <br/><br/>
+
+        <div className="mt-8 bg-gradient-to-br from-white to-sky-50 border border-sky-200 rounded-2xl p-6 sm:p-8 shadow-lg">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 className="text-xl sm:text-2xl font-semibold text-sky-800 tracking-tight">Seguimiento de Cliente</h1>
+                    <p className="text-sm text-slate-500">Envía un correo personalizado al cliente sobre su pedido</p>
+                </div>
+            </div>
+
+            <div className="space-y-5">
+                <div>
+                    <label htmlFor="tituloCorreo" className="block text-sm font-semibold text-sky-700 mb-2">
+                        Asunto del correo
+                    </label>
+                    <ShadcnInput
+                        id="asunto"
+                        value={asunto}
+                        onChange={e => setAsunto(e.target.value)}
+                        placeholder="Ej: Actualización de tu pedido #123"
+                        className="w-full"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="mensajeCorreo" className="block text-sm font-semibold text-sky-700 mb-2">
+                        Mensaje
+                    </label>
+                    <Textarea
+                        value={mensaje}
+                        onChange={(e) => setMensaje(e.target.value)}
+                        id="mensajeCorreo"
+                        placeholder="Escribe aquí el mensaje para el cliente..."
+                        className="w-full min-h-[160px] resize-none rounded-lg border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent"
+                    />
+                </div>
+
+                <div className="flex items-center gap-3 pt-2">
+                    <ShadcnButton
+                        funcion={()=> seguimientoCliente(asunto,email,mensaje)}
+                        className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                        nombre="Enviar Seguimiento"
+                    />
+                    <span className="text-xs text-slate-500">
+                        El cliente recibirá este correo en su email registrado
+                    </span>
+                </div>
+            </div>
         </div>
 
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import ToasterClient from "@/Componentes/ToasterClient";
 import {toast} from "react-hot-toast";
 import {useCarritoGlobal} from "@/ContextosGlobales/CarritoContext";
+import {ShadcnButton} from "@/Componentes/shadcnButton";
 
 export default function FormularioPago() {
 
@@ -40,8 +41,63 @@ const [carrito] = useCarritoGlobal();
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 
+const [codigoVerificadorCupon,setcodigoVerificadorCupon] = useState('');
+const [porcentajeDescuento, setporcentajeDescuento] = useState(0);
+const [valorDescuento, setvalorDescuento] = useState(0);
+const [dataCupon, setDataCupon] = useState([]);
+
 const API = process.env.NEXT_PUBLIC_API_URL;
 
+
+async function verificacionCupon(codigoVerificadorCupon) {
+try {
+
+    if (!codigoVerificadorCupon) {
+        return toast.error('Debe ingresar un codigo para aplicar descuento');
+    }
+
+    const res = await fetch(`${API}/cupon/seleccionarCuponesCodigo`,{
+        method: 'POST',
+        headers: {Accept: 'application/json',
+        'Content-Type': 'application/json'},
+        body: JSON.stringify({codigoVerificadorCupon}),
+        mode: 'cors',
+        cache: 'no-cache'
+    })
+
+    if(!res.ok) {
+        return toast.error('El cupon ingresado es Invalido');
+    }
+
+    const respuestaQuery = await res.json();
+    if (respuestaQuery) {
+        setDataCupon(respuestaQuery)
+        return toast.success('Se ha encontrado cupon');
+
+    }else if (respuestaQuery.message === false) {
+        return toast.error('Debe ingresar un cupon valido para aplicar descuento');
+    }
+
+
+}catch(error) {
+    console.log(error)
+    return toast.error('Ha ocurrido un error, intentelo mas tarde.');
+}
+}
+
+
+useEffect(() => {
+    let porcentaje = 0;
+
+    if (dataCupon.length > 0) {
+        dataCupon.forEach(element => {
+            porcentaje = element.porcentajeDescuento;
+            return porcentaje;
+        })
+        setporcentajeDescuento(porcentaje);
+        setvalorDescuento(porcentaje / 100)
+    }
+    },[dataCupon])
 
     const productoCatidades = {};
 
@@ -68,10 +124,30 @@ const API = process.env.NEXT_PUBLIC_API_URL;
         return productosFiltrados.reduce((acc, p) => acc + (Number(p.precio) * Number(p.cantidad)), 0);
     }, [productosFiltrados]);
 
-    // Evitar setState durante el render -> actualizar totalPagado solo cuando cambie totalCarrito
+
+
+// Evitar setState durante el render -> actualizar totalPagado solo cuando cambie totalCarrito
     useEffect(() => {
-        settotalPagado(totalCarrito);
-    }, [totalCarrito]);
+        if (!valorDescuento || valorDescuento === 0 ){
+            settotalPagado(totalCarrito);
+        }else {
+            let montoAdescontar = totalCarrito * valorDescuento;
+            settotalPagado(totalCarrito - montoAdescontar);
+        }
+
+    }, [totalCarrito, valorDescuento]);
+
+// Aplicar descuento a los productos antes de enviarlos
+    const productosConDescuento = useMemo(() => {
+        return productosFiltrados.map(p => ({
+            ...p,
+            precio: valorDescuento > 0
+                ? Number(p.precio) * (1 - valorDescuento)
+                : Number(p.precio)
+        }));
+    }, [productosFiltrados, valorDescuento]);
+
+
 
     const formatCLP = (n) => Number(n).toLocaleString('es-CL');
 
@@ -94,7 +170,7 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 
                 // Enviamos el payload tal cual lo espera el backend (title, unit_price, quantity)
                 body: JSON.stringify({
-                    productosDelCarrito: productosFiltrados,
+                    productosDelCarrito: productosConDescuento,
                     comprador: {
                         nombre_comprador,
                         apellidosComprador,
@@ -207,6 +283,9 @@ const API = process.env.NEXT_PUBLIC_API_URL;
                         placeholder="Ej.: tucorreo@gmail.com"
                       />
                     </label>
+
+
+
 
 
 
@@ -341,17 +420,61 @@ const API = process.env.NEXT_PUBLIC_API_URL;
                   </div>
 
                   <div className="mt-6 border-t border-gray-200 pt-4 flex items-center justify-between text-sm sm:text-base">
-                    <span className="text-sm font-medium text-gray-700">Total</span>
+
+                  </div>
+                    <span className="text-sm font-medium text-gray-700">Total a Pagar :</span><br/>
                     <span className="text-lg font-semibold text-gray-900">
                       ${formatCLP(totalCarrito)}
                     </span>
-                  </div>
+
+                    <br/><br/>
+
+                    <span className="text-sm font-medium text-gray-700">Total con Descuento Aplicado :</span> <br/>
+                    <span className="text-lg font-semibold text-green-600">
+                           ${formatCLP(totalPagado)}
+                      </span>
+
+                    <br/><br/>
+
+                    <span className="text-xs text-gray-400 font-extralight">Descuento aplicado : {porcentajeDescuento} % </span>
 
                   <div className="mt-3 text-xs text-gray-500">
                     Los precios están expresados en CLP.
                   </div>
+
+
                 </div>
+
+
               </aside>
+
+
+                <div className="rounded-2xl shadow-sm  md:w-185 ring-gray-200  ring-1 bg-white">
+                  <div className="p-4 gap-6">
+
+
+                      <div className="flex items-center gap-2 w-70 md:w-100">
+                          <span className="text-sm font-bold text-gray-700">Cupon</span> <br/>
+                          <input
+                              type="text"
+                              value={codigoVerificadorCupon}
+                              onChange={(e) => setcodigoVerificadorCupon(e.target.value)}
+                              required
+                              className=" p-2 mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 text-gray-900 placeholder:text-gray-400 py-2"
+                              placeholder="(Opcional)"
+                          />
+                      </div>
+                      <br/>
+
+
+                      <ShadcnButton className="bg-green-700"
+                                    funcion={()=> verificacionCupon(codigoVerificadorCupon)}
+                                    nombre={"Aplicar Cupon Descuento"}/>
+
+                  </div>
+                </div>
+
+
             </div>
           </main>
         </div>
