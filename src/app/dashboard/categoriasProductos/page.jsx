@@ -176,122 +176,251 @@ useEffect(() => {
 
 
 return (
-  <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/70 p-4 md:p-8">
-      <ToasterClient></ToasterClient>
+  <div>
 
-      <div className="mx-auto max-w-6xl rounded-2xl border border-slate-200/80 bg-white/80 shadow-xl backdrop-blur-sm p-6 md:p-10">
+      {/*PANTALLAS MOVILES*/}
+      <div className="block md:hidden min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/70 p-4 md:p-8">
+          <ToasterClient></ToasterClient>
 
-
-          {/* CONTENEDOR DEL FORMULARIO DE INGRESO Y EDICION DE  CATEGORIAS*/}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-              <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-                  <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Formulario de Edicion/Ingreso Categorias</h1><br/>
-
-                  <label className="font-bold">Ingreso de Categoria : </label>
-                  <br/>
-
-                  <form onSubmit={insertarCategoria}>
-                      <input
-                          type={"text"}
-                          value={descripcionCategoria}
-                          onChange={(event) => setdescripcionCategoria(event.target.value)}
-                          placeholder="Tipo de categoría..."
-                          className="w-full mt-2 rounded-xl border border-slate-300/90 bg-white/90 text-slate-800 px-4 py-2.5 shadow-sm outline-none ring-0 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 placeholder:text-slate-400 transition disabled:opacity-60 disabled:cursor-not-allowed"
-                          disabled={isLoading}
-                      />
-
-                      <br/><br/>
-
-                      <button
-                          type="submit"
-                          className="mt-3 inline-flex items-center justify-center rounded-xl border border-blue-600/80 bg-blue-600/10 px-4 py-2.5 text-sm font-semibold text-blue-800 shadow-sm hover:bg-blue-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-blue-100 transition"
-                      >
-                          Ingresar Nueva Categoria
-                      </button>
+          <div className="mx-auto max-w-6xl rounded-2xl border border-slate-200/80 bg-white/80 shadow-xl backdrop-blur-sm p-6 md:p-10">
 
 
+              {/* CONTENEDOR DEL FORMULARIO DE INGRESO Y EDICION DE  CATEGORIAS*/}
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                  <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                      <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Gestion Categorias</h1><br/>
 
-                      {categoriaSelecionado &&(
-                          <button
-                              onClick={()=> actualizarCategoria(categoriaSelecionado.id_categoriaProducto, descripcionCategoria)}
-                              type="button"
+                      <label className="font-bold">Ingreso de Categoria : </label>
+                      <br/>
+
+                      <form onSubmit={insertarCategoria}>
+                          <input
+                              type={"text"}
+                              value={descripcionCategoria}
+                              onChange={(event) => setdescripcionCategoria(event.target.value)}
+                              placeholder="Tipo de categoría..."
+                              className="w-full mt-2 rounded-xl border border-slate-300/90 bg-white/90 text-slate-800 px-4 py-2.5 shadow-sm outline-none ring-0 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 placeholder:text-slate-400 transition disabled:opacity-60 disabled:cursor-not-allowed"
                               disabled={isLoading}
-                              className="mt-3 ml-3 inline-flex items-center justify-center rounded-xl border border-emerald-600/80 bg-emerald-600/10 px-4 py-2.5 text-sm font-semibold text-emerald-800 shadow-sm hover:bg-emerald-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-emerald-100 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                          />
+
+                          <br/>
+
+                          <button
+                              type="submit"
+                              className="mt-3 inline-flex items-center justify-center rounded-xl border border-blue-600/80 bg-blue-600/10 p-2 text-sm font-semibold text-blue-800 shadow-sm hover:bg-blue-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-blue-100 transition"
                           >
-                              Actualizar
+                              Ingresar
                           </button>
 
-                      )}
+
+
+                          {categoriaSelecionado &&(
+                              <button
+                                  onClick={()=> actualizarCategoria(categoriaSelecionado.id_categoriaProducto, descripcionCategoria)}
+                                  type="button"
+                                  disabled={isLoading}
+                                  className="mt-3 ml-3 inline-flex items-center justify-center rounded-xl border border-emerald-600/80 bg-emerald-600/10 p-2 text-sm font-semibold text-emerald-800 shadow-sm hover:bg-emerald-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-emerald-100 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                              >
+                                  Actualizar
+                              </button>
+
+                          )}
 
 
 
 
 
-                  </form>
+                      </form>
 
-              </div>
-              {/* CONTENEDOR DEL LISTADO DE CATEGORIAS*/}
-              <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-                  <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Lista de Categorías</h1>
-                  <br/>
+                  </div>
+                  {/* CONTENEDOR DEL LISTADO DE CATEGORIAS*/}
+                  <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                      <h1 className="text-base md:text-3xl font-semibold tracking-tight text-slate-900">Lista de Categorías</h1>
+                      <br/>
 
-                  {/* MAPEO DEL LISTADO DE CATEGORIAS CON EL FETCH USEFECT*/}
-                  <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-1">
-                    {isLoading ? (
-                      // Skeleton loader list (fixed height to avoid layout shift)
-                      <div className="space-y-3">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className="animate-pulse flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3"
-                          >
-                            <div className="h-5 w-48 rounded bg-slate-200" />
-                            <div className="flex gap-2">
-                              <div className="h-8 w-20 rounded bg-slate-200" />
-                              <div className="h-8 w-20 rounded bg-slate-200" />
-                            </div>
-                          </div>
-                        ))}
+                      {/* MAPEO DEL LISTADO DE CATEGORIAS CON EL FETCH USEFECT*/}
+                      <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-1">
+                          {isLoading ? (
+                              // Skeleton loader list (fixed height to avoid layout shift)
+                              <div className="space-y-3">
+                                  {Array.from({ length: 6 }).map((_, i) => (
+                                      <div
+                                          key={i}
+                                          className="animate-pulse flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3"
+                                      >
+                                          <div className="h-5 w-48 rounded bg-slate-200" />
+                                          <div className="flex gap-2">
+                                              <div className="h-8 w-20 rounded bg-slate-200" />
+                                              <div className="h-8 w-20 rounded bg-slate-200" />
+                                          </div>
+                                      </div>
+                                  ))}
+                              </div>
+                          ) : categorias.length === 0 ? (
+                              <div className="rounded-xl border border-slate-200/90 bg-white/90 px-4 py-6 text-center text-slate-500">
+                                  No hay categorías registradas todavía.
+                              </div>
+                          ) : (
+                              categorias.map((categoria) => (
+                                  <div
+                                      className=" items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3 shadow-sm hover:shadow-md transition"
+                                      key={categoria.id_categoriaProducto}
+                                  >
+                                      <h1 className="text-xs p-2 font-medium text-slate-800">{categoria.descripcionCategoria}</h1>
+                                      <div className="flex gap-2">
+                                          <button
+                                              className="inline-flex items-center rounded-lg border border-sky-600/80 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                              onClick={() => seleccionarCategoriaEspecifica(categoria.id_categoriaProducto)}
+                                              disabled={isLoading}
+                                          >
+                                              Seleccionar
+                                          </button>
+                                          <button
+                                              className="inline-flex items-center rounded-lg border border-rose-600/80 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100 focus:outline-none focus:ring-4 focus:ring-rose-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                              onClick={() => eliminarCategorias(categoria.id_categoriaProducto)}
+                                              disabled={isLoading}
+                                          >
+                                              Eliminar
+                                          </button>
+                                      </div>
+                                  </div>
+                              ))
+                          )}
                       </div>
-                    ) : categorias.length === 0 ? (
-                      <div className="rounded-xl border border-slate-200/90 bg-white/90 px-4 py-6 text-center text-slate-500">
-                        No hay categorías registradas todavía.
-                      </div>
-                    ) : (
-                      categorias.map((categoria) => (
-                        <div
-                          className="flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3 shadow-sm hover:shadow-md transition"
-                          key={categoria.id_categoriaProducto}
-                        >
-                          <h1 className="p-2 font-medium text-slate-800">{categoria.descripcionCategoria}</h1>
-                          <div className="flex gap-2">
-                            <button
-                              className="inline-flex items-center rounded-lg border border-sky-600/80 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
-                              onClick={() => seleccionarCategoriaEspecifica(categoria.id_categoriaProducto)}
-                              disabled={isLoading}
-                            >
-                              Seleccionar
-                            </button>
-                            <button
-                              className="inline-flex items-center rounded-lg border border-rose-600/80 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100 focus:outline-none focus:ring-4 focus:ring-rose-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
-                              onClick={() => eliminarCategorias(categoria.id_categoriaProducto)}
-                              disabled={isLoading}
-                            >
-                              Eliminar
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    )}
+
                   </div>
 
               </div>
 
-          </div>
 
+          </div>
 
       </div>
 
+
+
+
+
+
+
+      {/*PATALLAS DE ESCRITORIO*/}
+      <div className="hidden md:block min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/70 p-4 md:p-8">
+          <ToasterClient></ToasterClient>
+
+          <div className="mx-auto max-w-6xl rounded-2xl border border-slate-200/80 bg-white/80 shadow-xl backdrop-blur-sm p-6 md:p-10">
+
+
+              {/* CONTENEDOR DEL FORMULARIO DE INGRESO Y EDICION DE  CATEGORIAS*/}
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                  <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                      <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Formulario de Edicion/Ingreso Categorias</h1><br/>
+
+                      <label className="font-bold">Ingreso de Categoria : </label>
+                      <br/>
+
+                      <form onSubmit={insertarCategoria}>
+                          <input
+                              type={"text"}
+                              value={descripcionCategoria}
+                              onChange={(event) => setdescripcionCategoria(event.target.value)}
+                              placeholder="Tipo de categoría..."
+                              className="w-full mt-2 rounded-xl border border-slate-300/90 bg-white/90 text-slate-800 px-4 py-2.5 shadow-sm outline-none ring-0 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 placeholder:text-slate-400 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                              disabled={isLoading}
+                          />
+
+                          <br/><br/>
+
+                          <button
+                              type="submit"
+                              className="mt-3 inline-flex items-center justify-center rounded-xl border border-blue-600/80 bg-blue-600/10 px-4 py-2.5 text-sm font-semibold text-blue-800 shadow-sm hover:bg-blue-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-blue-100 transition"
+                          >
+                              Ingresar Nueva Categoria
+                          </button>
+
+
+
+                          {categoriaSelecionado &&(
+                              <button
+                                  onClick={()=> actualizarCategoria(categoriaSelecionado.id_categoriaProducto, descripcionCategoria)}
+                                  type="button"
+                                  disabled={isLoading}
+                                  className="mt-3 ml-3 inline-flex items-center justify-center rounded-xl border border-emerald-600/80 bg-emerald-600/10 px-4 py-2.5 text-sm font-semibold text-emerald-800 shadow-sm hover:bg-emerald-600/20 active:scale-[0.99] focus:outline-none focus:ring-4 focus:ring-emerald-100 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                              >
+                                  Actualizar
+                              </button>
+
+                          )}
+
+
+
+
+
+                      </form>
+
+                  </div>
+                  {/* CONTENEDOR DEL LISTADO DE CATEGORIAS*/}
+                  <div className="p-6 md:p-8 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                      <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Lista de Categorías</h1>
+                      <br/>
+
+                      {/* MAPEO DEL LISTADO DE CATEGORIAS CON EL FETCH USEFECT*/}
+                      <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-1">
+                          {isLoading ? (
+                              // Skeleton loader list (fixed height to avoid layout shift)
+                              <div className="space-y-3">
+                                  {Array.from({ length: 6 }).map((_, i) => (
+                                      <div
+                                          key={i}
+                                          className="animate-pulse flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3"
+                                      >
+                                          <div className="h-5 w-48 rounded bg-slate-200" />
+                                          <div className="flex gap-2">
+                                              <div className="h-8 w-20 rounded bg-slate-200" />
+                                              <div className="h-8 w-20 rounded bg-slate-200" />
+                                          </div>
+                                      </div>
+                                  ))}
+                              </div>
+                          ) : categorias.length === 0 ? (
+                              <div className="rounded-xl border border-slate-200/90 bg-white/90 px-4 py-6 text-center text-slate-500">
+                                  No hay categorías registradas todavía.
+                              </div>
+                          ) : (
+                              categorias.map((categoria) => (
+                                  <div
+                                      className="flex items-center justify-between rounded-xl border border-slate-200/90 bg-white/90 px-4 py-3 shadow-sm hover:shadow-md transition"
+                                      key={categoria.id_categoriaProducto}
+                                  >
+                                      <h1 className="p-2 font-medium text-slate-800">{categoria.descripcionCategoria}</h1>
+                                      <div className="flex gap-2">
+                                          <button
+                                              className="inline-flex items-center rounded-lg border border-sky-600/80 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                              onClick={() => seleccionarCategoriaEspecifica(categoria.id_categoriaProducto)}
+                                              disabled={isLoading}
+                                          >
+                                              Seleccionar
+                                          </button>
+                                          <button
+                                              className="inline-flex items-center rounded-lg border border-rose-600/80 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100 focus:outline-none focus:ring-4 focus:ring-rose-100 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                              onClick={() => eliminarCategorias(categoria.id_categoriaProducto)}
+                                              disabled={isLoading}
+                                          >
+                                              Eliminar
+                                          </button>
+                                      </div>
+                                  </div>
+                              ))
+                          )}
+                      </div>
+
+                  </div>
+
+              </div>
+
+
+          </div>
+
+      </div>
   </div>
 );
 }

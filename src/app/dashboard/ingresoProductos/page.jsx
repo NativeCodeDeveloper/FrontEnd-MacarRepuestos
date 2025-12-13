@@ -966,7 +966,50 @@ async function marcarOfertaProductos(id_producto) {
 
 
 
-          <div className="w-full mt-20 bg-gradient-to-br from-white to-sky-50 rounded-4xl bg-white shadow-xl ring-1 ring-gray-50 p-6">
+          {/*TABLA DE PRODUCTOS EN PANTALLAS DE CELULARES*/}
+
+          <div className=" block  md:hidden w-full mt-20 bg-gradient-to-br from-white to-sky-50 rounded-4xl bg-white shadow-xl ring-1 ring-gray-50 p-6">
+              <Table>
+                  <TableCaption>Listado de Productos Ingresados</TableCaption>
+                  <TableHeader>
+                      <TableRow>
+                          <TableHead className="text-center bg-gradient-to-r bg-sky-100 uppercase font-bold tracking-wide">Titulo</TableHead>
+                          <TableHead className="text-center bg-gradient-to-r bg-sky-100 uppercase font-bold tracking-wide"> </TableHead>
+                          <TableHead className="text-center bg-gradient-to-r bg-sky-100 uppercase font-bold tracking-wide"> </TableHead>
+                      </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                      {listadoProductos.map((producto) => (
+                          <TableRow key={producto.id_producto}>
+
+
+                              <TableCell className="text-start font-bold">{producto.tituloProducto}</TableCell>
+
+
+                              <TableCell className="text-center">
+                                  <ShadcnButton className="bg-red-600" variant={"bg-red"} nombre={"Eliminar"} funcion={()=> eliminarProducto(producto.id_producto)}/>
+                              </TableCell>
+
+
+                              <TableCell className="text-center">
+                                  <ShadcnButton className="bg-green-600" nombre={"Seleccionar"} funcion={()=> cargarProductoEspecifico(producto.id_producto)} />
+                              </TableCell>
+
+                          </TableRow>
+                      ))}
+                  </TableBody>
+
+              </Table>
+          </div>
+
+
+
+
+
+
+
+          {/*TABLA DE PRODUCTOS EN ESCRITORIO DE COMPUTADORES*/}
+          <div className=" hidden md:block w-full mt-20 bg-gradient-to-br from-white to-sky-50 rounded-4xl bg-white shadow-xl ring-1 ring-gray-50 p-6">
               <Table>
                   <TableCaption>Listado de Productos Ingresados</TableCaption>
                   <TableHeader>
